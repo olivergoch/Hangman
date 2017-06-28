@@ -2,6 +2,7 @@
 #include <string>
 using namespace std;
 
+//Declarations
 class Hangman
 {
 public:
@@ -14,6 +15,7 @@ public:
     bool guessLetters(char c);
     void wordGenerator();
     bool gameWon();
+    bool doneAndDone(char c = 'x');
 private:
     bool wrong[7];
     bool letters[26];
@@ -40,7 +42,7 @@ private:
     string words;
 };
 
-
+//Constuctor
 Hangman::Hangman()
 {
     wordGenerator();
@@ -69,10 +71,11 @@ Hangman::Hangman()
     int percentage = 0;
 }
 
+//Word Generator
 void Hangman::wordGenerator()
 {
     srand(time(NULL));
-    int rnd = rand() % 4;
+    int rnd = rand() % 26;
     switch (rnd)
     {
         case 0:
@@ -82,10 +85,79 @@ void Hangman::wordGenerator()
             words = "expedition";
             break;
         case 2:
-            words = "andromeda";
+            words = "knowledge";
             break;
         case 3:
-            words = "mass";
+            words = "leading";
+            break;
+        case 4:
+            words = "beautiful";
+            break;
+        case 5:
+            words = "goodbye";
+            break;
+        case 6:
+            words = "flowers";
+            break;
+        case 7:
+            words = "cheese";
+            break;
+        case 8:
+            words = "yellow";
+            break;
+        case 9:
+            words = "bruins";
+            break;
+        case 10:
+            words = "gold";
+            break;
+        case 11:
+            words = "blue";
+            break;
+        case 12:
+            words = "brother";
+            break;
+        case 13:
+            words = "sister";
+            break;
+        case 14:
+            words = "question";
+            break;
+        case 15:
+            words = "answer";
+            break;
+        case 16:
+            words = "abruptly";
+            break;
+        case 17:
+            words = "exodus";
+            break;
+        case 18:
+            words = "haphazard";
+            break;
+        case 19:
+            words = "jawbreaker";
+            break;
+        case 20:
+            words = "keyhole";
+            break;
+        case 21:
+            words = "microwave";
+            break;
+        case 22:
+            words = "pnuemonia";
+            break;
+        case 23:
+            words = "subway";
+            break;
+        case 24:
+            words = "unknown";
+            break;
+        case 25:
+            words = "whatever";
+            break;
+        case 26:
+            words = "vegetable";
             break;
         default:
             exit(1);
@@ -97,6 +169,7 @@ void Hangman::wordGenerator()
     }
 }
 
+//Draw Game
 void Hangman::drawGame()
 {
     system("clear");
@@ -115,6 +188,7 @@ void Hangman::drawGame()
     cout << "Make a Guess: ";
 }
 
+//Draw the Hangman
 void Hangman::draw()
 {
     if(wrong[0])
@@ -141,6 +215,7 @@ void Hangman::draw()
     drawGame();
 }
 
+//Erase Letters
 void Hangman::eraseLetters(char c, int index)
 {
     if(index >= 0 && index <= 4)
@@ -185,6 +260,7 @@ void Hangman::eraseLetters(char c, int index)
     }
 }
 
+//Guess Letters
 bool Hangman::guessLetters(char c)
 {
     bool guessedRight = false;
@@ -199,6 +275,7 @@ bool Hangman::guessLetters(char c)
     return guessedRight;
 }
 
+//Update
 string Hangman::update(char c)
 {
     string statement = "Error!";
@@ -228,11 +305,13 @@ string Hangman::update(char c)
     return statement + "\n"+ "Press Enter to continue";
 }
 
+//Is Game Over
 bool Hangman::isGameOver()
 {
     return wrong[6] == true;
 }
 
+//Game Won
 bool Hangman::gameWon()
 {
     for(int i = 0; i < guess.size(); i++)
@@ -244,10 +323,24 @@ bool Hangman::gameWon()
     return true;
 }
 
+//Done and Done
+bool Hangman::doneAndDone(char c)
+{
+    if(tolower(c) == 'a')
+        return false;
+    else if (tolower(c) == 'b')
+        return true;
+    else
+        cout << "Try again" << endl;
+    return false;
+}
+
 int main()
 {
+RESTART:
     Hangman h;
-    while(!h.isGameOver() && !h.gameWon())
+    bool doneForever = false;
+    while(!h.isGameOver() && !h.gameWon() && !doneForever)
     {
         h.draw();
         char input;
@@ -260,5 +353,24 @@ int main()
         h.draw();
     if(h.gameWon())
         h.draw();
-    cout << endl;
+    string line = "A";
+    while(!line.empty())
+    {
+        cout << "Press Enter to continue";
+        getline(cin, line);
+    }
+    if(h.isGameOver() || h.gameWon())
+    {
+        system("clear");
+        cout << "Do you want to play again" << endl;
+        cout << "Enter A if you want to play again" << endl;
+        cout << "Enter B if you want to quit" << endl;
+        cout << "Enter your choice here: ";
+        char otherinput;
+        cin >> otherinput;
+        if(h.doneAndDone(otherinput))
+            doneForever = true;
+        else
+            goto RESTART;
+    }
 }
