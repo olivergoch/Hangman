@@ -15,7 +15,7 @@ public:
     bool guessLetters(char c);
     void wordGenerator();
     bool gameWon();
-    bool doneAndDone(char c = 'x');
+    bool doneAndDone(char &c);
 private:
     bool wrong[7];
     bool letters[26];
@@ -45,7 +45,11 @@ private:
 //Constuctor
 Hangman::Hangman()
 {
+    //generate word fo game
     wordGenerator();
+    //set all wrong and letters to false
+    //wrong is number of guesses
+    //letters is the letters you can guess
     for(int i = 0; i < 7; i++)
         wrong[i] = false;
     for(int i = 0; i < 26; i++)
@@ -66,6 +70,7 @@ Hangman::Hangman()
     letters3 = "lmnop";
     letters4 = "qrstu";
     letters5 = "vwxyz";
+    //this shows percentages
     int guesses = 0;
     int right = 0;
     int percentage = 0;
@@ -79,7 +84,7 @@ void Hangman::wordGenerator()
     switch (rnd)
     {
         case 0:
-            words = "hello";
+            words = "awkward";
             break;
         case 1:
             words = "expedition";
@@ -106,13 +111,13 @@ void Hangman::wordGenerator()
             words = "yellow";
             break;
         case 9:
-            words = "bruins";
+            words = "beekeeper";
             break;
         case 10:
-            words = "gold";
+            words = "espionage";
             break;
         case 11:
-            words = "blue";
+            words = "fluffiness";
             break;
         case 12:
             words = "brother";
@@ -172,25 +177,27 @@ void Hangman::wordGenerator()
 //Draw Game
 void Hangman::drawGame()
 {
+    //draw all the things
     system("clear");
-    cout << '\n' << "Hangman!" << endl;
-    cout << "Letter Bank:" << endl;
-    cout << "  " << letters1  << "     " << top << endl;;
-    cout << "  " << letters2 <<"    " << head << "     " << mid << endl;
-    cout << "  " << letters3 <<"    " <<  arm1 << body << arm2 << "    " << mid << endl;
-    cout << "  " << letters4 << '\t' << "   " << leg1 << leg2 << " " << base << endl;
-    cout << "  " << letters5 << '\t' << "   " << lose << endl;
-    cout << "Guess the word:" << endl;
-    cout << guess << endl;
+    cout << "\t\t\t" << "  Hangman!" << endl;
+    cout << "\t\t\t" << "Letter Bank:" << endl;
+    cout << "\t\t\t" << "  " << letters1  << "     " << top << endl;;
+    cout << "\t\t\t" << "  " << letters2 <<"    " << head << "     " << mid << endl;
+    cout << "\t\t\t" << "  " << letters3 <<"    " <<  arm1 << body << arm2 << "    " << mid << endl;
+    cout << "\t\t\t" << "  " << letters4 << '\t' << "   " << leg1 << leg2 << " " << base << endl;
+    cout << "\t\t\t" << "  " << letters5 << '\t' << "   " << lose << endl;
+    cout << "\t\t\t" << "Guess the word:" << endl;
+    cout << "\t\t\t" << guess << endl;
     cout.precision(3);
-    cout << "Guesses made: " << guesses << endl;
-    cout << "Percentage right " << percentage << "%" << endl;
-    cout << "Make a Guess: ";
+    cout << "\t\t\t" << "Guesses made: " << guesses << endl;
+    cout << "\t\t\t" << "Percentage right " << percentage << "%" << endl;
+    cout << "\t\t\t" << "Make a Guess: ";
 }
 
 //Draw the Hangman
 void Hangman::draw()
 {
+    //this is the hangman itself
     if(wrong[0])
     {
         top = "_______";
@@ -218,6 +225,10 @@ void Hangman::draw()
 //Erase Letters
 void Hangman::eraseLetters(char c, int index)
 {
+    //this is a bit convoluted
+    //but basically when a letter is typed
+    //and it hasn't already been typed
+    //it gets erased
     if(index >= 0 && index <= 4)
     {
         for(int i = 0; i < 5; i++)
@@ -263,6 +274,7 @@ void Hangman::eraseLetters(char c, int index)
 //Guess Letters
 bool Hangman::guessLetters(char c)
 {
+    //check if the letter guessed is correct
     bool guessedRight = false;
     for(int i = 0; i < words.size(); i++)
     {
@@ -278,31 +290,42 @@ bool Hangman::guessLetters(char c)
 //Update
 string Hangman::update(char c)
 {
-    string statement = "Error!";
+    //basically cheats so I can skip around
+    if(c == '0')
+    {
+        wrong[6] = true;
+        return "\t\t\tSKIP!";
+    }
+    if(c == '1')
+        exit(1);
+    string statement = "\t\t\tError!";
     c = tolower(c);
     int index = c % 97;
+    //if the letter hasn't been guessed already
     if(!letters[index])
     {
+        //set the index to true and erase it from word bank
         letters[index] = true;
         eraseLetters(c, index);
+        //check if word is actually there
         if(guessLetters(c))
         {
             guesses++;
             right++;
-            statement = "Correct!";
+            statement = "\t\t\tCorrect!";
         }
         else
         {
             wrong[count] = true;
             count++;
             guesses++;
-            statement = "Wrong!";
+            statement = "\t\t\tWrong!";
         }
     }
     else
-        statement = "You already entered that letter";
+        statement = "\t\t\tYou already entered that letter";
     percentage = right/guesses * 100;
-    return statement + "\n"+ "Press Enter to continue";
+    return statement + "\n"+ "\t\t\tPress Enter to continue";
 }
 
 //Is Game Over
@@ -324,19 +347,31 @@ bool Hangman::gameWon()
 }
 
 //Done and Done
-bool Hangman::doneAndDone(char c)
+bool Hangman::doneAndDone(char &c)
 {
     if(tolower(c) == 'a')
         return false;
     else if (tolower(c) == 'b')
         return true;
     else
-        cout << "Try again" << endl;
+    {
+        cout << "Enter A or B" << endl;
+        c = 'x';
+    }
     return false;
 }
 
 int main()
 {
+    system("clear");
+    string titleScreen = "a";
+    while(!titleScreen.empty())
+    {
+        cout << "\t\t\tWelcome to Hangman!" << endl
+        << "\t\t      Press enter to continue"<< endl;
+        getline(cin, titleScreen);
+    }
+    
 RESTART:
     Hangman h;
     bool doneForever = false;
@@ -362,15 +397,18 @@ RESTART:
     if(h.isGameOver() || h.gameWon())
     {
         system("clear");
-        cout << "Do you want to play again" << endl;
-        cout << "Enter A if you want to play again" << endl;
-        cout << "Enter B if you want to quit" << endl;
-        cout << "Enter your choice here: ";
+        cout << "\t\t\tDo you want to play again" << endl;
+        cout << "\t\t\t  Enter A to play again" << endl;
+        cout << "\t\t\t    Enter B to quit" << endl;
+        cout << "\t\t\tEnter your choice here: ";
         char otherinput;
+    INPUT:
         cin >> otherinput;
         if(h.doneAndDone(otherinput))
             doneForever = true;
-        else
+        else if (otherinput == 'a')
             goto RESTART;
+        else
+            goto INPUT;
     }
 }
