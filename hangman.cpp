@@ -45,7 +45,7 @@ private:
 //Constuctor
 Hangman::Hangman()
 {
-    //generate word fo game
+    //generate word for game
     wordGenerator();
     //set all wrong and letters to false
     //wrong is number of guesses
@@ -179,7 +179,12 @@ void Hangman::drawGame()
 {
     //draw all the things
     system("clear");
-    cout << "\t\t\t" << "  Hangman!" << endl;
+    cout << "\t" <<"  ___ ___" << endl
+    << "\t"<< " /   |   \\_____    ____    ____   _____ _____    ____" << endl
+    << "\t"<<"/    ~    \\__  \\  /    \\  / ___\\ /     \\\\__  \\  /    \\" << endl
+    << "\t"<<"\\    Y    // __ \\|   |  \\/ /_/  >  Y Y  \\/ __ \\|   |  \\" << endl
+    << "\t"<<" \\___|_  /(____  /___|  /\\___  /|__|_|  (____  /___|  /" << endl
+    << "\t" <<"       \\/      \\/     \\//_____/       \\/     \\/     \\/" << endl;
     cout << "\t\t\t" << "Letter Bank:" << endl;
     cout << "\t\t\t" << "  " << letters1  << "     " << top << endl;;
     cout << "\t\t\t" << "  " << letters2 <<"    " << head << "     " << mid << endl;
@@ -367,8 +372,28 @@ int main()
     string titleScreen = "a";
     while(!titleScreen.empty())
     {
-        cout << "\t\t\tWelcome to Hangman!" << endl
-        << "\t\t      Press enter to continue"<< endl;
+        //cout << "\t\t\tWelcome to Hangman!" << endl
+        cout <<
+        " __      __       .__" << endl
+        <<"/  \\    /  \\ ____ |  |   ____  ____   _____   ____" << endl
+        <<"\\   \\/\\/   // __ \\|  | _/ ___\\/  _ \\ /     \\_/ __ \\" << endl
+        << " \\        /\\  ___/|  |_\\  \\__(  <_> )  Y Y  \\  ___/" << endl
+        <<"  \\__/\\  /  \\___  >____/\\___  >____/|__|_|  /\\___  >" << endl
+        <<"       \\/       \\/          \\/            \\/     \\/" << endl
+        <<"___________" << endl
+        <<"\\__    ___/___" << endl
+        <<"  |    | /  _ \\" << endl
+        <<"  |    |(  <_> )"<< endl
+        <<"  |____| \\____/" << endl
+        
+        <<"  ___ ___" << endl
+        <<" /   |   \\_____    ____    ____   _____ _____    ____" << endl
+        <<"/    ~    \\__  \\  /    \\  / ___\\ /     \\\\__  \\  /    \\" << endl
+        <<"\\    Y    // __ \\|   |  \\/ /_/  >  Y Y  \\/ __ \\|   |  \\" << endl
+        <<" \\___|_  /(____  /___|  /\\___  /|__|_|  (____  /___|  /" << endl
+        <<"       \\/      \\/     \\//_____/       \\/     \\/     \\/" << endl;
+        
+        cout<< "\t\t      Press enter to continue"<< endl;
         getline(cin, titleScreen);
     }
     
